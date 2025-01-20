@@ -27,6 +27,14 @@ export default function TOC() {
           Kambaz
         </Link>
       </li>
+      <li>
+      <a
+          href="https://github.com/lawrenceosher/kambaz-react-web-app-cs4550-sp25"
+          id="wd-github"
+        >
+          Lawrence's GitHub Repository
+        </a>
+      </li>
     </ul>
   );
 }
