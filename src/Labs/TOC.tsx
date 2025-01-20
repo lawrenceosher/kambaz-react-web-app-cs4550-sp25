@@ -28,7 +28,7 @@ export default function TOC() {
         </Link>
       </li>
       <li>
-      <a
+        <a
           href="https://github.com/lawrenceosher/kambaz-react-web-app-cs4550-sp25"
           id="wd-github"
         >
