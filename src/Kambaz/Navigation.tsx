@@ -7,7 +7,7 @@ export default function KambazNavigation() {
   return (
     <div
       id="wd-kambaz-navigation"
-      style={{ width: 120 }}
+      style={{ width: 115 }}
       className="list-group rounded-0 position-fixed
     bottom-0 top-0 d-none d-md-block bg-black z-2"
     >
@@ -23,7 +23,7 @@ export default function KambazNavigation() {
       <Link
         to="/Kambaz/Account"
         id="wd-account-link"
-        className="list-group-item text-center border-0 bg-black text-white"
+        className="list-group-item list-group-item-action text-center border-0 bg-black text-white"
       >
         <FaRegCircleUser className="fs-1 text text-white" />
         <br />
@@ -33,7 +33,7 @@ export default function KambazNavigation() {
       <Link
         to="/Kambaz/Dashboard"
         id="wd-dashboard-link"
-        className="list-group-item text-center border-0
+        className="list-group-item list-group-item-action text-center border-0
                   bg-white text-danger"
       >
         <AiOutlineDashboard className="fs-1 text-danger" />
@@ -44,7 +44,7 @@ export default function KambazNavigation() {
       <Link
         to="/Kambaz/Dashboard"
         id="wd-course-link"
-        className="list-group-item text-white
+        className="list-group-item list-group-item-action text-white
                   bg-black text-center border-0"
       >
         <LiaBookSolid className="fs-1 text-danger" />
@@ -55,7 +55,7 @@ export default function KambazNavigation() {
       <Link
         to="/Kambaz/Calendar"
         id="wd-calendar-link"
-        className="list-group-item text-white
+        className="list-group-item list-group-item-action text-white
                   bg-black text-center border-0"
       >
         <IoCalendarOutline className="fs-1 text-danger" />
@@ -66,7 +66,7 @@ export default function KambazNavigation() {
       <Link
         to="/Kambaz/Inbox"
         id="wd-inbox-link"
-        className="list-group-item text-white
+        className="list-group-item list-group-item-action text-white
                   bg-black text-center border-0"
       >
         <FaInbox className="fs-1 text-danger" />
@@ -77,7 +77,7 @@ export default function KambazNavigation() {
       <Link
         to="/Labs"
         id="wd-labs-link"
-        className="list-group-item text-white
+        className="list-group-item list-group-item-action text-white
                   bg-black text-center border-0"
       >
         <LiaCogSolid className="fs-1 text-danger" />
