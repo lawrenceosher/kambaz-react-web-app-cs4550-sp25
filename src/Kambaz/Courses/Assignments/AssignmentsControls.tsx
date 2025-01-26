@@ -1,26 +1,17 @@
-import { Button, Col, FormControl, InputGroup, Row } from "react-bootstrap";
+import { Button, FormControl, InputGroup } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 
 export default function AssignmentsControls() {
   return (
-    <Row id="wd-assignments-controls" className="text-nowrap mb-3">
-      <Col>
+    <div id="wd-assignments-controls" className="mb-3 d-flex w-100">
+      <div className="w-50 me-1 d-flex justify-content-start">
         <InputGroup className="align-items-center" size="lg">
           <FaSearch />
           <FormControl id="wd-search-assignment" placeholder="Search..." />
         </InputGroup>
-      </Col>
+      </div>
 
-      <Col>
-        <Button
-          variant="danger"
-          size="lg"
-          className="me-1"
-          id="wd-add-assignment"
-        >
-          + Assignment
-        </Button>
-
+      <div className="d-flex justify-content-end flex-fill">
         <Button
           variant="secondary"
           size="lg"
@@ -29,7 +20,16 @@ export default function AssignmentsControls() {
         >
           + Group
         </Button>
-      </Col>
-    </Row>
+
+        <Button
+          variant="danger"
+          size="lg"
+          className="me-1"
+          id="wd-add-assignment"
+        >
+          + Assignment
+        </Button>
+      </div>
+    </div>
   );
 }
