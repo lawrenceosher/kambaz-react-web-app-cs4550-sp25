@@ -69,7 +69,7 @@ export default function AssignmentEditor() {
               <option value="In-Person">In-Person</option>
             </FormSelect>
 
-            <FormGroup>
+            <FormGroup controlId="wd-entry-options">
               <FormLabel className="fw-bold">Online Entry Options</FormLabel>
               <FormCheck
                 type="checkbox"
@@ -137,7 +137,7 @@ export default function AssignmentEditor() {
         </div>
       </Form>
       <hr />
-      
+
       <div className="float-end">
         <Button className="me-1 btn-secondary">Cancel</Button>
         <Button className="btn-danger">Save</Button>
