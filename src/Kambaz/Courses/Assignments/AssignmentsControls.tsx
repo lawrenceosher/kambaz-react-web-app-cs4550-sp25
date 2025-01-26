@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 
 export default function AssignmentsControls() {
   return (
-    <div id="wd-assignments-controls" className="mb-3 d-flex w-100">
+    <div id="wd-assignments-controls" className="mb-5 d-flex w-100 align-items-center">
       <div className="w-50 me-1 d-flex justify-content-start">
         <InputGroup className="align-items-center" size="lg">
           <FaSearch />

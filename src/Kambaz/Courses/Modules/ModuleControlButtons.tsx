@@ -7,4 +7,6 @@ export default function ModuleControlButtons() {
       <GreenCheckmark />
       <BsPlus />
       <IoEllipsisVertical className="fs-4" />
-    </div> );}
+    </div>
+  );
+}
