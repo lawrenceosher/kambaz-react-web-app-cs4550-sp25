@@ -10,7 +10,7 @@ export default function Account() {
       <div className="me-5">
         <AccountNavigation />
       </div>
-      <div>
+      <div className="w-25">
         <Routes>
           <Route path="/" element={<Navigate to="/Kambaz/Account/Signin" />} />
           <Route path="/Signin" element={<Signin />} />
