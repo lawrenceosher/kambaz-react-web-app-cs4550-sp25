@@ -116,7 +116,7 @@ export default function AssignmentEditor() {
 
             <FormGroup controlId="wd-due-date" className="mb-3">
               <FormLabel className="fw-bold">Due</FormLabel>
-              <FormControl type="date" value="2024-05-13" />
+              <FormControl type="date" defaultValue="2024-05-13" />
             </FormGroup>
 
             <div className="d-flex">
@@ -125,12 +125,12 @@ export default function AssignmentEditor() {
                 className="w-50 mb-3 me-2"
               >
                 <FormLabel className="fw-bold">Available From</FormLabel>
-                <FormControl type="date" value="2024-05-06" />
+                <FormControl type="date" defaultValue="2024-05-06" />
               </FormGroup>
 
               <FormGroup controlId="wd-available-until" className="w-50 mb-3">
                 <FormLabel className="fw-bold">Until</FormLabel>
-                <FormControl type="date" value="2024-05-20" />
+                <FormControl type="date" defaultValue="2024-05-20" />
               </FormGroup>
             </div>
           </div>
