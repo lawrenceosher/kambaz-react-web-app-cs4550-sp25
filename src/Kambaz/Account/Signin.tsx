@@ -14,7 +14,11 @@ export default function Signin() {
         className="mb-2"
       />
 
-      <Link to="/Kambaz/Dashboard" id="wd-signin-btn" className="btn btn-primary w-100 mb-2">
+      <Link
+        to="/Kambaz/Dashboard"
+        id="wd-signin-btn"
+        className="btn btn-primary w-100 mb-2"
+      >
         Sign In
       </Link>
 

@@ -18,7 +18,7 @@ export default function Signup() {
         className="mb-2"
       />
 
-      <Link to="/Kambaz/Account/Profile" className="btn btn-primary w-100 mb-2">
+      <Link to="/Kambaz/Dashboard" className="btn btn-primary w-100 mb-2">
         Sign Up
       </Link>
       <br />
