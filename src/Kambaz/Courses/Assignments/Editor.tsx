@@ -1,5 +1,4 @@
 import {
-  Button,
   Form,
   FormCheck,
   FormControl,
@@ -181,20 +180,18 @@ export default function AssignmentEditor() {
       <hr />
 
       <div className="float-end">
-        <Button
-          as={Link}
+        <Link
           to={`/Kambaz/Courses/${cid}/Assignments`}
-          className="me-1 btn-secondary"
+          className="me-1 btn btn-secondary"
         >
           Cancel
-        </Button>
-        <Button
-          as={Link}
+        </Link>
+        <Link
           to={`/Kambaz/Courses/${cid}/Assignments`}
-          className="btn-danger"
+          className="btn btn-danger"
         >
           Save
-        </Button>
+        </Link>
       </div>
     </div>
   );
