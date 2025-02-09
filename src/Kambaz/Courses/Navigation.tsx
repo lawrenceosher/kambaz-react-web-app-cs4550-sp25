@@ -18,6 +18,7 @@ export default function CourseNavigation() {
     <div id="wd-courses-navigation" className="wd list-group fs-5 rounded-0">
       {links.map((link) => (
         <Link
+          key={link}
           to={`/Kambaz/Courses/${cid}/${link}`}
           id={`wd-course-${link.toLowerCase()}-link`}
           className={`list-group-item ${

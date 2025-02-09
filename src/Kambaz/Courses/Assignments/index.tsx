@@ -48,7 +48,7 @@ export default function Assignments() {
         {assignments
           .filter((assignment) => assignment.course === cid)
           .map((assignment) => (
-            <ListGroupItem className="wd-assignment-list-item p-3 ps-1 mt-0 d-flex align-items-center">
+            <ListGroupItem key={assignment._id} className="wd-assignment-list-item p-3 ps-1 mt-0 d-flex align-items-center">
               <BsGripVertical className="me-3 fs-3" />
               <a href={`#/Kambaz/Courses/${cid}/Assignments/${assignment._id}`}>
                 <FaEdit className="fs-3 me-3 text-success" />
