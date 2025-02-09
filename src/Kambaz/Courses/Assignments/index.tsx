@@ -15,6 +15,17 @@ export default function Assignments() {
   const { cid } = useParams();
   const assignments = db.assignments;
 
+  function toDate(isoDateString: string) {
+    const myDate = new Date(isoDateString);
+
+    const formattedDate = new Intl.DateTimeFormat("en-us", {
+      dateStyle: "full",
+      timeStyle: "short",
+    });
+
+    return formattedDate.format(myDate);
+  }
+
   return (
     <div id="wd-assignments">
       <AssignmentsControls />
@@ -54,12 +65,12 @@ export default function Assignments() {
                   <span className="text-danger"> Multiple Modules </span>{" "}
                   <span className="mx-2"> | </span>
                   <span className="fw-bold">Not available until</span>{" "}
-                  {assignment.startDateDay} at {""}
-                  {assignment.startDateTime} <span className="mx-2"> | </span>
+                  {toDate(assignment.availableDate)}
+                  <span className="mx-2"> | </span>
                 </div>
                 <div>
-                  <span className="fw-bold">Due</span> {assignment.dueDateDay}{" "}
-                  at {assignment.dueDateTime} <span className="mx-2"> | </span>{" "}
+                  <span className="fw-bold">Due</span>{" "}
+                  {toDate(assignment.dueDate)} <span className="mx-2"> | </span>{" "}
                   {assignment.points} pts
                 </div>
               </div>
