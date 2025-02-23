@@ -8,7 +8,24 @@ import { ListGroup, ListGroupItem } from "react-bootstrap";
 import GreenCheckmark from "../Modules/GreenCheckmark";
 import { IoEllipsisVertical } from "react-icons/io5";
 
+import { useParams } from "react-router";
+import * as db from "../../Database";
+
 export default function Assignments() {
+  const { cid } = useParams();
+  const assignments = db.assignments;
+
+  function toDate(isoDateString: string) {
+    const myDate = new Date(isoDateString);
+
+    const formattedDate = new Intl.DateTimeFormat("en-us", {
+      dateStyle: "full",
+      timeStyle: "short",
+    });
+
+    return formattedDate.format(myDate);
+  }
+
   return (
     <div id="wd-assignments">
       <AssignmentsControls />
@@ -28,96 +45,42 @@ export default function Assignments() {
       </h3>
 
       <ListGroup id="wd-assignment-list" className="rounded-0">
-        <ListGroupItem className="wd-assignment-list-item p-3 ps-1 mt-0 d-flex align-items-center">
-          <BsGripVertical className="me-3 fs-3" />
-          <a href="#/Kambaz/Courses/1234/Assignments/123">
-            <FaEdit className="fs-3 me-3 text-success" />
-          </a>
-          
-          <div className="d-flex flex-column">
-            <a
-              href="#/Kambaz/Courses/1234/Assignments/123"
-              className="wd-assignment-link fw-bold text-decoration-none text-black"
-            >
-              A1 - ENV + HTML
-            </a>{" "}
-            <div>
-              <span className="text-danger"> Multiple Modules </span>{" "}
-              <span className="mx-2"> | </span>
-              <span className="fw-bold">Not available until</span> May 6 at
-              12:00am <span className="mx-2"> | </span>
-            </div>
-            <div>
-              <span className="fw-bold">Due</span> May 13 at 11:59pm{" "}
-              <span className="mx-2"> | </span> 100 pts
-            </div>
-          </div>
+        {assignments
+          .filter((assignment) => assignment.course === cid)
+          .map((assignment) => (
+            <ListGroupItem key={assignment._id} className="wd-assignment-list-item p-3 ps-1 mt-0 d-flex align-items-center">
+              <BsGripVertical className="me-3 fs-3" />
+              <a href={`#/Kambaz/Courses/${cid}/Assignments/${assignment._id}`}>
+                <FaEdit className="fs-3 me-3 text-success" />
+              </a>
 
-          <div className="d-inline-flex flex-grow-1 justify-content-end">
-            <GreenCheckmark />
-            <IoEllipsisVertical className="ms-3 fs-3" />
-          </div>
-        </ListGroupItem>
+              <div className="d-flex flex-column">
+                <a
+                  href={`#/Kambaz/Courses/${cid}/Assignments/${assignment._id}`}
+                  className="wd-assignment-link fw-bold text-decoration-none text-black"
+                >
+                  {assignment.title}
+                </a>{" "}
+                <div>
+                  <span className="text-danger"> Multiple Modules </span>{" "}
+                  <span className="mx-2"> | </span>
+                  <span className="fw-bold">Not available until</span>{" "}
+                  {toDate(assignment.availableDate)}
+                  <span className="mx-2"> | </span>
+                </div>
+                <div>
+                  <span className="fw-bold">Due</span>{" "}
+                  {toDate(assignment.dueDate)} <span className="mx-2"> | </span>{" "}
+                  {assignment.points} pts
+                </div>
+              </div>
 
-        <ListGroupItem className="wd-assignment-list-item p-3 ps-1 mt-0 d-flex align-items-center">
-          <BsGripVertical className="me-3 fs-3" />
-          <a href="#/Kambaz/Courses/1234/Assignments/123">
-            <FaEdit className="fs-3 me-3 text-success" />
-          </a>
-          <div className="d-flex flex-column">
-            <a
-              href="#/Kambaz/Courses/1234/Assignments/123"
-              className="wd-assignment-link fw-bold text-decoration-none text-black"
-            >
-              A2 - CSS + BOOTSTRAP
-            </a>{" "}
-            <div>
-              <span className="text-danger"> Multiple Modules </span>{" "}
-              <span className="mx-2"> | </span>
-              <span className="fw-bold">Not available until</span> May 13 at
-              12:00am <span className="mx-2"> | </span>
-            </div>
-            <div>
-              <span className="fw-bold">Due</span> May 20 at 11:59pm{" "}
-              <span className="mx-2"> | </span> 100 pts
-            </div>
-          </div>
-
-          <div className="d-inline-flex flex-grow-1 justify-content-end">
-            <GreenCheckmark />
-            <IoEllipsisVertical className="ms-3 fs-3" />
-          </div>
-        </ListGroupItem>
-
-        <ListGroupItem className="wd-assignment-list-item p-3 ps-1 mt-0 d-flex align-items-center">
-          <BsGripVertical className="me-3 fs-3" />
-          <a href="#/Kambaz/Courses/1234/Assignments/123">
-            <FaEdit className="fs-3 me-3 text-success" />
-          </a>
-          <div className="d-flex flex-column">
-            <a
-              href="#/Kambaz/Courses/1234/Assignments/123"
-              className="wd-assignment-link fw-bold text-decoration-none text-black"
-            >
-              A3 - JAVASCRIPT + REACT
-            </a>{" "}
-            <div>
-              <span className="text-danger"> Multiple Modules </span>{" "}
-              <span className="mx-2"> | </span>
-              <span className="fw-bold">Not available until</span> May 20 at
-              12:00am <span className="mx-2"> | </span>
-            </div>
-            <div>
-              <span className="fw-bold">Due</span> May 27 at 11:59pm{" "}
-              <span className="mx-2"> | </span> 100 pts
-            </div>
-          </div>
-
-          <div className="d-inline-flex flex-grow-1 justify-content-end">
-            <GreenCheckmark />
-            <IoEllipsisVertical className="ms-3 fs-3" />
-          </div>
-        </ListGroupItem>
+              <div className="d-inline-flex flex-grow-1 justify-content-end">
+                <GreenCheckmark />
+                <IoEllipsisVertical className="ms-3 fs-3" />
+              </div>
+            </ListGroupItem>
+          ))}
       </ListGroup>
     </div>
   );

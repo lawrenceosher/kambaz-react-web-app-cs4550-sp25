@@ -1,5 +1,4 @@
 import {
-  Button,
   Form,
   FormCheck,
   FormControl,
@@ -8,13 +7,37 @@ import {
   FormSelect,
 } from "react-bootstrap";
 
+import { useParams } from "react-router";
+import { Link } from "react-router-dom";
+import * as db from "../../Database";
+
 export default function AssignmentEditor() {
+  const { aid } = useParams();
+  const { cid } = useParams();
+  const assignments = db.assignments;
+
+  const selectedAssignment = assignments.find((a) => a._id === aid);
+
+  if (!selectedAssignment) {
+    return <div className="w-75">Invalid Assignment</div>;
+  }
+
+  function formatDateForFormInput(isoDateString: string) {
+    const myDate = new Date(isoDateString);
+
+    // Code taken from GeeksForGeeks: https://www.geeksforgeeks.org/how-to-format-javascript-date-as-yyyy-mm-dd/
+    const year = myDate.getFullYear();
+    const month = String(myDate.getMonth() + 1).padStart(2, "0");
+    const day = String(myDate.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
   return (
     <div id="wd-assignments-editor" className="w-75">
       <Form>
         <FormGroup controlId="wd-name" className="mb-3">
           <FormLabel>Assignment Name</FormLabel>
-          <FormControl type="text" value="A1 - ENV + HTML" />
+          <FormControl type="text" value={selectedAssignment.title} />
         </FormGroup>
 
         <FormControl
@@ -24,8 +47,7 @@ export default function AssignmentEditor() {
           cols={50}
           className="mb-3"
         >
-          The assignment is available online Submit a link to the landing page
-          of your Web application running on Netlify
+          {selectedAssignment.description}
         </FormControl>
 
         <FormGroup
@@ -33,7 +55,11 @@ export default function AssignmentEditor() {
           className="d-flex mb-3 align-items-center"
         >
           <FormLabel className="w-25 m-2 text-end">Points</FormLabel>
-          <FormControl type="number" value={100} className="w-75" />
+          <FormControl
+            type="number"
+            value={selectedAssignment.points}
+            className="w-75"
+          />
         </FormGroup>
 
         <FormGroup
@@ -116,7 +142,12 @@ export default function AssignmentEditor() {
 
             <FormGroup controlId="wd-due-date" className="mb-3">
               <FormLabel className="fw-bold">Due</FormLabel>
-              <FormControl type="date" defaultValue="2024-05-13" />
+              <FormControl
+                type="date"
+                defaultValue={formatDateForFormInput(
+                  selectedAssignment.dueDate
+                )}
+              />
             </FormGroup>
 
             <div className="d-flex">
@@ -125,12 +156,22 @@ export default function AssignmentEditor() {
                 className="w-50 mb-3 me-2"
               >
                 <FormLabel className="fw-bold">Available From</FormLabel>
-                <FormControl type="date" defaultValue="2024-05-06" />
+                <FormControl
+                  type="date"
+                  defaultValue={formatDateForFormInput(
+                    selectedAssignment.availableDate
+                  )}
+                />
               </FormGroup>
 
               <FormGroup controlId="wd-available-until" className="w-50 mb-3">
                 <FormLabel className="fw-bold">Until</FormLabel>
-                <FormControl type="date" defaultValue="2024-05-20" />
+                <FormControl
+                  type="date"
+                  defaultValue={formatDateForFormInput(
+                    selectedAssignment.dueDate
+                  )}
+                />
               </FormGroup>
             </div>
           </div>
@@ -139,8 +180,18 @@ export default function AssignmentEditor() {
       <hr />
 
       <div className="float-end">
-        <Button className="me-1 btn-secondary">Cancel</Button>
-        <Button className="btn-danger">Save</Button>
+        <Link
+          to={`/Kambaz/Courses/${cid}/Assignments`}
+          className="me-1 btn btn-secondary"
+        >
+          Cancel
+        </Link>
+        <Link
+          to={`/Kambaz/Courses/${cid}/Assignments`}
+          className="btn btn-danger"
+        >
+          Save
+        </Link>
       </div>
     </div>
   );
