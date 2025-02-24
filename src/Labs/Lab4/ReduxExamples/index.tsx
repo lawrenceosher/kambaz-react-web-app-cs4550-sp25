@@ -1,3 +1,4 @@
+import CounterRedux from "./CounterRedux";
 import HelloRedux from "./HelloRedux";
 
 export default function ReduxExamples() {
@@ -5,6 +6,7 @@ export default function ReduxExamples() {
     <div>
       <h2>Redux Examples</h2>
       <HelloRedux />
+      <CounterRedux />
     </div>
   );
 }
