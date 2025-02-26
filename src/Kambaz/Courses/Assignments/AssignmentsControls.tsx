@@ -2,9 +2,13 @@
 import { Button, FormControl, InputGroup } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 
 export default function AssignmentsControls() {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
+
+  const { cid } = useParams();
 
   return (
     <div
@@ -34,14 +38,13 @@ export default function AssignmentsControls() {
             + Group
           </Button>
 
-          <Button
-            variant="danger"
-            size="lg"
-            className="me-1"
+          <Link
+            to={`/Kambaz/Courses/${cid}/Assignments/`}
+            className="btn btn-danger btn-lg me-1"
             id="wd-add-assignment"
           >
             + Assignment
-          </Button>
+          </Link>
         </div>
       )}
     </div>

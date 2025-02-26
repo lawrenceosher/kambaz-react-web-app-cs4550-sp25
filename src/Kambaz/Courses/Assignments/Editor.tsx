@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Form,
   FormCheck,
@@ -9,14 +10,15 @@ import {
 
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-import * as db from "../../Database";
+import { useSelector } from "react-redux";
 
 export default function AssignmentEditor() {
   const { aid } = useParams();
   const { cid } = useParams();
-  const assignments = db.assignments;
 
-  const selectedAssignment = assignments.find((a) => a._id === aid);
+  const { assignments } = useSelector( (state: any) => state.assignmentsReducer )
+
+  const selectedAssignment = assignments.find((a: any) => a._id === aid);
 
   if (!selectedAssignment) {
     return <div className="w-75">Invalid Assignment</div>;
