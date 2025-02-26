@@ -164,7 +164,7 @@ export default function AssignmentEditor() {
                 <FormControl
                   type="date"
                   defaultValue={formatDateForFormInput(
-                    selectedAssignment.availableDate
+                    selectedAssignment.availableFromDate
                   )}
                 />
               </FormGroup>
@@ -174,7 +174,7 @@ export default function AssignmentEditor() {
                 <FormControl
                   type="date"
                   defaultValue={formatDateForFormInput(
-                    selectedAssignment.dueDate
+                    selectedAssignment.availableUntilDate
                   )}
                 />
               </FormGroup>

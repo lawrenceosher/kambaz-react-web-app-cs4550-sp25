@@ -81,7 +81,7 @@ export default function Assignments() {
                   <span className="text-danger"> Multiple Modules </span>{" "}
                   <span className="mx-2"> | </span>
                   <span className="fw-bold">Not available until</span>{" "}
-                  {toDate(assignment.availableDate)}
+                  {toDate(assignment.availableFromDate)}
                   <span className="mx-2"> | </span>
                 </div>
                 <div>

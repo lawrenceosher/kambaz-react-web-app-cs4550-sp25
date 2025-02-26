@@ -4,7 +4,8 @@
     "title": "Propulsion Assignment",
     "description": "Description for Propulsion Assignment goes here",
     "course": "RS101",
-    "availableDate": "2025-05-05T24:00:00",
+    "availableFromDate": "2025-05-05T24:00:00",
+    "availableUntilDate": "2025-05-13T23:59:00",
     "dueDate": "2025-05-13T23:59:00",
     "points": 100
   },
@@ -13,7 +14,8 @@
     "title": "Combustion Analysis",
     "description": "Description for Combustion Analysis goes here",
     "course": "RS101",
-    "availableDate": "2025-05-12T24:00:00",
+    "availableFromDate": "2025-05-12T24:00:00",
+    "availableUntilDate": "2025-05-20T23:59:00",
     "dueDate": "2025-05-20T23:59:00",
     "points": 100
   },
@@ -22,7 +24,8 @@
     "title": "Nozzle Design Project",
     "description": "Description for Nozzle Design Project goes here",
     "course": "RS101",
-    "availableDate": "2025-05-19T24:00:00",
+    "availableFromDate": "2025-05-19T24:00:00",
+    "availableUntilDate": "2025-05-27T23:59:00",
     "dueDate": "2025-05-27T23:59:00",
     "points": 100
   },
@@ -31,7 +34,8 @@
     "title": "Aerodynamics Quiz",
     "description": "Description for Aerodynamics Quiz goes here",
     "course": "RS102",
-    "availableDate": "2025-05-05T24:00:00",
+    "availableFromDate": "2025-05-05T24:00:00",
+    "availableUntilDate": "2025-05-13T23:59:00",
     "dueDate": "2025-05-13T23:59:00",
     "points": 100
   },
@@ -40,7 +44,8 @@
     "title": "Flow Analysis",
     "description": "Description for Flow Analysis goes here",
     "course": "RS102",
-    "availableDate": "2025-05-12T24:00:00",
+    "availableFromDate": "2025-05-12T24:00:00",
+    "availableUntilDate": "2025-05-20T23:59:00",
     "dueDate": "2025-05-20T23:59:00",
     "points": 100
   },
@@ -49,7 +54,8 @@
     "title": "Heating Analysis",
     "description": "Description for Heating Analysis goes here",
     "course": "RS102",
-    "availableDate": "2025-05-19T24:00:00",
+    "availableFromDate": "2025-05-19T24:00:00",
+    "availableUntilDate": "2025-05-27T23:59:00",
     "dueDate": "2025-05-27T23:59:00",
     "points": 100
   },
@@ -58,7 +64,8 @@
     "title": "Structural Design Task",
     "description": "Description for Structural Design Task goes here",
     "course": "RS103",
-    "availableDate": "2025-05-05T24:00:00",
+    "availableFromDate": "2025-05-05T24:00:00",
+    "availableUntilDate": "2025-05-13T23:59:00",
     "dueDate": "2025-05-13T23:59:00",
     "points": 100
   },
@@ -67,7 +74,8 @@
     "title": "Orbital Calculations",
     "description": "Description for Orbital Calculations goes here",
     "course": "RS103",
-    "availableDate": "2025-05-12T24:00:00",
+    "availableFromDate": "2025-05-12T24:00:00",
+    "availableUntilDate": "2025-05-20T23:59:00",
     "dueDate": "2025-05-20T23:59:00",
     "points": 100
   },
@@ -76,7 +84,8 @@
     "title": "Systems Engineering Exam",
     "description": "Description for Systems Engineering Exam goes here",
     "course": "RS103",
-    "availableDate": "2025-05-19T24:00:00",
+    "availableFromDate": "2025-05-19T24:00:00",
+    "availableUntilDate": "2025-05-27T23:59:00",
     "dueDate": "2025-05-27T23:59:00",
     "points": 100
   }
