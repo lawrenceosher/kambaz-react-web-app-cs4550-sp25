@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BsGripVertical } from "react-icons/bs";
 import { GoTriangleDown } from "react-icons/go";
 import { FaEdit } from "react-icons/fa";
@@ -10,9 +11,11 @@ import { IoEllipsisVertical } from "react-icons/io5";
 
 import { useParams } from "react-router";
 import * as db from "../../Database";
+import { useSelector } from "react-redux";
 
 export default function Assignments() {
   const { cid } = useParams();
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
   const assignments = db.assignments;
 
   function toDate(isoDateString: string) {
@@ -41,26 +44,39 @@ export default function Assignments() {
         <span className="border border-1 p-2 border-secondary-subtle rounded-pill fs-5">
           40% of Total
         </span>
-        <AssignmentControlButtons />
+        {currentUser.role === "FACULTY" && <AssignmentControlButtons />}
       </h3>
 
       <ListGroup id="wd-assignment-list" className="rounded-0">
         {assignments
           .filter((assignment) => assignment.course === cid)
           .map((assignment) => (
-            <ListGroupItem key={assignment._id} className="wd-assignment-list-item p-3 ps-1 mt-0 d-flex align-items-center">
-              <BsGripVertical className="me-3 fs-3" />
-              <a href={`#/Kambaz/Courses/${cid}/Assignments/${assignment._id}`}>
-                <FaEdit className="fs-3 me-3 text-success" />
-              </a>
+            <ListGroupItem
+              key={assignment._id}
+              className="wd-assignment-list-item p-3 ps-1 mt-0 d-flex align-items-center"
+            >
+              {currentUser.role === "FACULTY" && (
+                <>
+                  <BsGripVertical className="me-3 fs-3" />
+                  <a
+                    href={`#/Kambaz/Courses/${cid}/Assignments/${assignment._id}`}
+                  >
+                    <FaEdit className="fs-3 me-3 text-success" />
+                  </a>
+                </>
+              )}
 
               <div className="d-flex flex-column">
-                <a
-                  href={`#/Kambaz/Courses/${cid}/Assignments/${assignment._id}`}
-                  className="wd-assignment-link fw-bold text-decoration-none text-black"
-                >
-                  {assignment.title}
-                </a>{" "}
+                {currentUser.role === "FACULTY" ? (
+                  <a
+                    href={`#/Kambaz/Courses/${cid}/Assignments/${assignment._id}`}
+                    className="wd-assignment-link fw-bold text-decoration-none text-black"
+                  >
+                    {assignment.title}
+                  </a>
+                ) : (
+                  <span className="fw-bold text-black">{assignment.title}</span>
+                )}{" "}
                 <div>
                   <span className="text-danger"> Multiple Modules </span>{" "}
                   <span className="mx-2"> | </span>

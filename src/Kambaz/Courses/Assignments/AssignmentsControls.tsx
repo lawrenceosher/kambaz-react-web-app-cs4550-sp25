@@ -1,7 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, FormControl, InputGroup } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 export default function AssignmentsControls() {
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+
   return (
     <div
       id="wd-assignments-controls"
@@ -19,25 +23,27 @@ export default function AssignmentsControls() {
         </InputGroup>
       </div>
 
-      <div className="d-flex justify-content-end flex-fill">
-        <Button
-          variant="secondary"
-          size="lg"
-          className="me-1"
-          id="wd-add-assignment-group"
-        >
-          + Group
-        </Button>
+      {currentUser.role === "FACULTY" && (
+        <div className="d-flex justify-content-end flex-fill">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="me-1"
+            id="wd-add-assignment-group"
+          >
+            + Group
+          </Button>
 
-        <Button
-          variant="danger"
-          size="lg"
-          className="me-1"
-          id="wd-add-assignment"
-        >
-          + Assignment
-        </Button>
-      </div>
+          <Button
+            variant="danger"
+            size="lg"
+            className="me-1"
+            id="wd-add-assignment"
+          >
+            + Assignment
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

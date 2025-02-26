@@ -26,44 +26,53 @@ export default function Dashboard({
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
-      <h5>
-        New Course
-        <button
-          className="btn btn-primary float-end"
-          id="wd-add-new-course-click"
-          onClick={addNewCourse}
-        >
-          Add
-        </button>
-        <button
-          className="btn btn-warning float-end me-2"
-          onClick={updateCourse}
-          id="wd-update-course-click"
-        >
-          Update
-        </button>
-      </h5>
-      <br />
-      <input
-        value={course.name}
-        className="form-control mb-2"
-        onChange={(e) => setCourse({ ...course, name: e.target.value })}
-      />
-      <textarea
-        value={course.description}
-        className="form-control"
-        onChange={(e) => setCourse({ ...course, description: e.target.value })}
-      />
-      <hr />
+      {currentUser.role === "FACULTY" && (
+        <div>
+          <h5>
+            New Course
+            <button
+              className="btn btn-primary float-end"
+              id="wd-add-new-course-click"
+              onClick={addNewCourse}
+            >
+              Add
+            </button>
+            <button
+              className="btn btn-warning float-end me-2"
+              onClick={updateCourse}
+              id="wd-update-course-click"
+            >
+              Update
+            </button>
+          </h5>
+          <br />
+          <input
+            value={course.name}
+            className="form-control mb-2"
+            onChange={(e) => setCourse({ ...course, name: e.target.value })}
+          />
+          <textarea
+            value={course.description}
+            className="form-control"
+            onChange={(e) =>
+              setCourse({ ...course, description: e.target.value })
+            }
+          />
+          <hr />
+        </div>
+      )}
       <h2 id="wd-dashboard-published">
-        Published Courses ({courses
-            .filter((course) =>
-              enrollments.some(
-                (enrollment) =>
-                  enrollment.user === currentUser._id &&
-                  enrollment.course === course._id
-              )
-            ).length})
+        Published Courses (
+        {
+          courses.filter((course) =>
+            enrollments.some(
+              (enrollment) =>
+                enrollment.user === currentUser._id &&
+                enrollment.course === course._id
+            )
+          ).length
+        }
+        )
       </h2>{" "}
       <hr />
       <div id="wd-dashboard-courses">
@@ -104,28 +113,32 @@ export default function Dashboard({
                         {course.description}
                       </Card.Text>
                       <Button variant="primary"> Go </Button>
-                      <Button
-                        variant="danger"
-                        onClick={(event) => {
-                          event.preventDefault();
-                          deleteCourse(course._id);
-                        }}
-                        className="float-end"
-                        id="wd-delete-course-click"
-                      >
-                        Delete
-                      </Button>
-                      <Button
-                        variant="warning"
-                        id="wd-edit-course-click"
-                        onClick={(event) => {
-                          event.preventDefault();
-                          setCourse(course);
-                        }}
-                        className="me-2 float-end"
-                      >
-                        Edit
-                      </Button>
+                      {currentUser.role === "FACULTY" && (
+                        <>
+                          <Button
+                            variant="danger"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              deleteCourse(course._id);
+                            }}
+                            className="float-end"
+                            id="wd-delete-course-click"
+                          >
+                            Delete
+                          </Button>
+                          <Button
+                            variant="warning"
+                            id="wd-edit-course-click"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setCourse(course);
+                            }}
+                            className="me-2 float-end"
+                          >
+                            Edit
+                          </Button>
+                        </>
+                      )}
                     </Card.Body>
                   </Link>
                 </Card>
