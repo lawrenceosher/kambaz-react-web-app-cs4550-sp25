@@ -39,7 +39,7 @@ export default function AssignmentsControls() {
           </Button>
 
           <Link
-            to={`/Kambaz/Courses/${cid}/Assignments/`}
+            to={`/Kambaz/Courses/${cid}/Assignments/new`}
             className="btn btn-danger btn-lg me-1"
             id="wd-add-assignment"
           >

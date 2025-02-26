@@ -16,6 +16,9 @@ export default function AssignmentEditor() {
   const { aid } = useParams();
   const { cid } = useParams();
 
+  // use a unique token for aid to signify a new assignment
+  // populate local state for assignment with the different properties with either existing assignment or blank fields
+
   const { assignments } = useSelector( (state: any) => state.assignmentsReducer )
 
   const selectedAssignment = assignments.find((a: any) => a._id === aid);
