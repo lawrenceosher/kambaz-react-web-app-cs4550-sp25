@@ -187,7 +187,7 @@ export default function AssignmentEditor() {
                     ...assignment,
                     dueDate: new Date(
                       new Date(e.target.value).getTime() + 60 * 60 * 24 * 1000
-                    ),
+                    ).toISOString(),
                   })
                 }
               />
@@ -209,7 +209,7 @@ export default function AssignmentEditor() {
                       ...assignment,
                       availableFromDate: new Date(
                         new Date(e.target.value).getTime() + 60 * 60 * 24 * 1000
-                      ),
+                      ).toISOString(),
                     })
                   }
                 />
@@ -227,7 +227,7 @@ export default function AssignmentEditor() {
                       ...assignment,
                       availableUntilDate: new Date(
                         new Date(e.target.value).getTime() + 60 * 60 * 24 * 1000
-                      ),
+                      ).toISOString(),
                     })
                   }
                 />
