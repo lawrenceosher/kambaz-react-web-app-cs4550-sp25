@@ -10,13 +10,12 @@ import GreenCheckmark from "../Modules/GreenCheckmark";
 import { IoEllipsisVertical } from "react-icons/io5";
 
 import { useParams } from "react-router";
-import * as db from "../../Database";
 import { useSelector } from "react-redux";
 
 export default function Assignments() {
   const { cid } = useParams();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const assignments = db.assignments;
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
 
   function toDate(isoDateString: string) {
     const myDate = new Date(isoDateString);
@@ -49,8 +48,8 @@ export default function Assignments() {
 
       <ListGroup id="wd-assignment-list" className="rounded-0">
         {assignments
-          .filter((assignment) => assignment.course === cid)
-          .map((assignment) => (
+          .filter((assignment: any) => assignment.course === cid)
+          .map((assignment: any) => (
             <ListGroupItem
               key={assignment._id}
               className="wd-assignment-list-item p-3 ps-1 mt-0 d-flex align-items-center"

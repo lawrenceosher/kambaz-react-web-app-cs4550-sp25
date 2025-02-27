@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  Button,
   Form,
   FormCheck,
   FormControl,
@@ -8,24 +9,37 @@ import {
   FormSelect,
 } from "react-bootstrap";
 
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addAssignment } from "./reducer";
+import { useState } from "react";
 
 export default function AssignmentEditor() {
   const { aid } = useParams();
   const { cid } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // use a unique token for aid to signify a new assignment
-  // populate local state for assignment with the different properties with either existing assignment or blank fields
-
-  const { assignments } = useSelector( (state: any) => state.assignmentsReducer )
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
 
   const selectedAssignment = assignments.find((a: any) => a._id === aid);
 
-  if (!selectedAssignment) {
-    return <div className="w-75">Invalid Assignment</div>;
-  }
+  const [assignment, setAssignment] = useState<any>(
+    selectedAssignment || {
+      title: "New Assignment",
+      description: "New Assignment Description",
+      points: 100,
+      availableFromDate: new Date(),
+      availableUntilDate: new Date(),
+      dueDate: new Date(),
+    }
+  );
+
+  const submitNewAssignment = () => {
+    dispatch(addAssignment({ ...assignment, course: cid }));
+    navigate(`/Kambaz/Courses/${cid}/Assignments`);
+  };
 
   function formatDateForFormInput(isoDateString: string) {
     const myDate = new Date(isoDateString);
@@ -42,7 +56,13 @@ export default function AssignmentEditor() {
       <Form>
         <FormGroup controlId="wd-name" className="mb-3">
           <FormLabel>Assignment Name</FormLabel>
-          <FormControl type="text" value={selectedAssignment.title} />
+          <FormControl
+            type="text"
+            defaultValue={assignment.title}
+            onChange={(e) =>
+              setAssignment({ ...assignment, title: e.target.value })
+            }
+          />
         </FormGroup>
 
         <FormControl
@@ -51,9 +71,11 @@ export default function AssignmentEditor() {
           rows={10}
           cols={50}
           className="mb-3"
-        >
-          {selectedAssignment.description}
-        </FormControl>
+          onChange={(e) =>
+            setAssignment({ ...assignment, description: e.target.value })
+          }
+          defaultValue={assignment.description}
+        />
 
         <FormGroup
           controlId="wd-points"
@@ -62,8 +84,11 @@ export default function AssignmentEditor() {
           <FormLabel className="w-25 m-2 text-end">Points</FormLabel>
           <FormControl
             type="number"
-            value={selectedAssignment.points}
+            defaultValue={assignment.points}
             className="w-75"
+            onChange={(e) =>
+              setAssignment({ ...assignment, points: e.target.value })
+            }
           />
         </FormGroup>
 
@@ -149,9 +174,10 @@ export default function AssignmentEditor() {
               <FormLabel className="fw-bold">Due</FormLabel>
               <FormControl
                 type="date"
-                defaultValue={formatDateForFormInput(
-                  selectedAssignment.dueDate
-                )}
+                defaultValue={formatDateForFormInput(assignment.dueDate)}
+                onChange={(e) =>
+                  setAssignment({ ...assignment, dueDate: e.target.value })
+                }
               />
             </FormGroup>
 
@@ -164,8 +190,14 @@ export default function AssignmentEditor() {
                 <FormControl
                   type="date"
                   defaultValue={formatDateForFormInput(
-                    selectedAssignment.availableFromDate
+                    assignment.availableFromDate
                   )}
+                  onChange={(e) =>
+                    setAssignment({
+                      ...assignment,
+                      availableFromDate: e.target.value,
+                    })
+                  }
                 />
               </FormGroup>
 
@@ -174,8 +206,14 @@ export default function AssignmentEditor() {
                 <FormControl
                   type="date"
                   defaultValue={formatDateForFormInput(
-                    selectedAssignment.availableUntilDate
+                    assignment.availableUntilDate
                   )}
+                  onChange={(e) =>
+                    setAssignment({
+                      ...assignment,
+                      availableUntilDate: e.target.value,
+                    })
+                  }
                 />
               </FormGroup>
             </div>
@@ -191,12 +229,9 @@ export default function AssignmentEditor() {
         >
           Cancel
         </Link>
-        <Link
-          to={`/Kambaz/Courses/${cid}/Assignments`}
-          className="btn btn-danger"
-        >
+        <Button variant="danger" onClick={submitNewAssignment}>
           Save
-        </Link>
+        </Button>
       </div>
     </div>
   );
