@@ -22,6 +22,10 @@ export default function Assignments() {
   const dispatch = useDispatch();
 
   const [show, setShow] = useState(false);
+  const [assignmentForModal, setAssignmentForModal] = useState({
+    title: "",
+    _id: "",
+  });
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -39,6 +43,16 @@ export default function Assignments() {
   return (
     <div id="wd-assignments">
       <AssignmentsControls />
+
+      <DeleteAssignmentDialog
+        show={show}
+        handleClose={handleClose}
+        assignmentTitle={assignmentForModal.title}
+        assignmentId={assignmentForModal._id}
+        deleteAssignment={() => {
+          dispatch(deleteAssignment(assignmentForModal._id));
+        }}
+      />
 
       <h3
         id="wd-assignments-title"
@@ -104,18 +118,11 @@ export default function Assignments() {
                     <FaTrash
                       className="text-danger me-4"
                       onClick={() => {
-                        console.log(assignment._id);
-                        console.log(assignment.title);
-                        dispatch(deleteAssignment(assignment._id));
-                      }}
-                    />
-                    <DeleteAssignmentDialog
-                      show={show}
-                      handleClose={handleClose}
-                      assignmentTitle={assignment.title}
-                      assignmentId={assignment._id}
-                      deleteAssignment={() => {
-                        dispatch(deleteAssignment(assignment._id));
+                        setAssignmentForModal({
+                          _id: assignment._id,
+                          title: assignment.title,
+                        });
+                        handleShow();
                       }}
                     />
                   </>
