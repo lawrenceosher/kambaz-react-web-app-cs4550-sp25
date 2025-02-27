@@ -181,7 +181,14 @@ export default function AssignmentEditor() {
                 type="date"
                 defaultValue={formatDateForFormInput(assignment.dueDate)}
                 onChange={(e) =>
-                  setAssignment({ ...assignment, dueDate: e.target.value })
+                  // Had to add an additional day to the date because it was always one day behind the clicked value when submitting a new assignment or editing
+                  // Code taken from StackOverflow for adding 1 day: https://stackoverflow.com/questions/13762930/how-to-add-24-hours-to-datetime-object-of-javascript
+                  setAssignment({
+                    ...assignment,
+                    dueDate: new Date(
+                      new Date(e.target.value).getTime() + 60 * 60 * 24 * 1000
+                    ),
+                  })
                 }
               />
             </FormGroup>
@@ -200,7 +207,9 @@ export default function AssignmentEditor() {
                   onChange={(e) =>
                     setAssignment({
                       ...assignment,
-                      availableFromDate: e.target.value,
+                      availableFromDate: new Date(
+                        new Date(e.target.value).getTime() + 60 * 60 * 24 * 1000
+                      ),
                     })
                   }
                 />
@@ -216,7 +225,9 @@ export default function AssignmentEditor() {
                   onChange={(e) =>
                     setAssignment({
                       ...assignment,
-                      availableUntilDate: e.target.value,
+                      availableUntilDate: new Date(
+                        new Date(e.target.value).getTime() + 60 * 60 * 24 * 1000
+                      ),
                     })
                   }
                 />
