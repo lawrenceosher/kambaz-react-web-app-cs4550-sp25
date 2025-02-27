@@ -12,7 +12,7 @@ import {
 import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addAssignment } from "./reducer";
+import { addAssignment, updateAssignment } from "./reducer";
 import { useState } from "react";
 
 export default function AssignmentEditor() {
@@ -38,6 +38,11 @@ export default function AssignmentEditor() {
 
   const submitNewAssignment = () => {
     dispatch(addAssignment({ ...assignment, course: cid }));
+    navigate(`/Kambaz/Courses/${cid}/Assignments`);
+  };
+
+  const updateExistingAssignment = () => {
+    dispatch(updateAssignment({ ...assignment }));
     navigate(`/Kambaz/Courses/${cid}/Assignments`);
   };
 
@@ -229,7 +234,14 @@ export default function AssignmentEditor() {
         >
           Cancel
         </Link>
-        <Button variant="danger" onClick={submitNewAssignment}>
+        <Button
+          variant="danger"
+          onClick={
+            aid === "newAssignment"
+              ? submitNewAssignment
+              : updateExistingAssignment
+          }
+        >
           Save
         </Button>
       </div>
