@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BsGripVertical } from "react-icons/bs";
 import { GoTriangleDown } from "react-icons/go";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import AssignmentsControls from "./AssignmentsControls";
@@ -10,12 +10,20 @@ import GreenCheckmark from "../Modules/GreenCheckmark";
 import { IoEllipsisVertical } from "react-icons/io5";
 
 import { useParams } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import DeleteAssignmentDialog from "./DeleteAssignmentDialog";
+import { useState } from "react";
+import { deleteAssignment } from "./reducer";
 
 export default function Assignments() {
   const { cid } = useParams();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+  const dispatch = useDispatch();
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   function toDate(isoDateString: string) {
     const myDate = new Date(isoDateString);
@@ -90,7 +98,28 @@ export default function Assignments() {
                 </div>
               </div>
 
-              <div className="d-inline-flex flex-grow-1 justify-content-end">
+              <div className="d-inline-flex flex-grow-1 justify-content-end fs-4">
+                {currentUser.role === "FACULTY" && (
+                  <>
+                    <FaTrash
+                      className="text-danger me-4"
+                      onClick={() => {
+                        console.log(assignment._id);
+                        console.log(assignment.title);
+                        dispatch(deleteAssignment(assignment._id));
+                      }}
+                    />
+                    <DeleteAssignmentDialog
+                      show={show}
+                      handleClose={handleClose}
+                      assignmentTitle={assignment.title}
+                      assignmentId={assignment._id}
+                      deleteAssignment={() => {
+                        dispatch(deleteAssignment(assignment._id));
+                      }}
+                    />
+                  </>
+                )}
                 <GreenCheckmark />
                 <IoEllipsisVertical className="ms-3 fs-3" />
               </div>
