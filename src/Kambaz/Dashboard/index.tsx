@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Card, Col, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { addEnrollment, deleteEnrollment } from "./reducer";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,10 +24,10 @@ export default function Dashboard({
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [showAllCourses, setShowAllCourses] = useState(false);
   const [showFilteredCourses, setShowFilteredCourses] = useState(true);
-
   const [mappableCourses, setMappableCourses] = useState(courses);
 
   useEffect(() => {
@@ -124,7 +124,21 @@ export default function Dashboard({
               className="wd-dashboard-course"
               style={{ width: "300px" }}
             >
-              <Card>
+              <Card
+                onClick={(event) => {
+                  if (
+                    currentUser.role === "STUDENT" &&
+                    !enrollments.some(
+                      (enrollment: any) =>
+                        enrollment.user === currentUser._id &&
+                        enrollment.course === course._id
+                    )
+                  ) {
+                    event.preventDefault();
+                    navigate("/Kambaz/Dashboard");
+                  }
+                }}
+              >
                 <Link
                   to={`/Kambaz/Courses/${course._id}/Home`}
                   className="wd-dashboard-course-link text-decoration-none text-dark"
