@@ -1,51 +1,53 @@
 import { useState } from "react";
 import { FormControl } from "react-bootstrap";
+
 const REMOTE_SERVER = import.meta.env.VITE_REMOTE_SERVER;
-export default function PathParameters() {
+export default function QueryParameters() {
   const [a, setA] = useState("34");
   const [b, setB] = useState("23");
+
   return (
-    <div>
-      <h3>Path Parameters</h3>
+    <div id="wd-query-parameters">
+      <h3>Query Parameters</h3>
       <FormControl
+        id="wd-query-parameter-a"
         className="mb-2"
-        id="wd-path-parameter-a"
-        type="number"
         defaultValue={a}
+        type="number"
         onChange={(e) => setA(e.target.value)}
       />
       <FormControl
+        id="wd-query-parameter-b"
         className="mb-2"
-        id="wd-path-parameter-b"
-        type="number"
         defaultValue={b}
+        type="number"
         onChange={(e) => setB(e.target.value)}
       />
       <a
+        id="wd-query-parameter-add"
         className="btn btn-primary me-2"
-        id="wd-path-parameter-add"
-        href={`${REMOTE_SERVER}/lab5/add/${a}/${b}`}
+        href={`${REMOTE_SERVER}/lab5/calculator?operation=add&a=${a}&b=${b}`}
       >
         Add {a} + {b}
       </a>
       <a
+        id="wd-query-parameter-subtract"
         className="btn btn-danger me-2"
-        id="wd-path-parameter-subtract"
-        href={`${REMOTE_SERVER}/lab5/subtract/${a}/${b}`}
+        href={`${REMOTE_SERVER}/lab5/calculator?operation=subtract&a=${a}&b=${b}`}
       >
         Subtract {a} - {b}
       </a>
       <a
+        id="wd-query-parameter-multiply"
         className="btn btn-primary me-2"
-        id="wd-path-parameter-multiply"
-        href={`${REMOTE_SERVER}/lab5/multiply/${a}/${b}`}
+        href={`${REMOTE_SERVER}/lab5/calculator?operation=multiply&a=${a}&b=${b}`}
       >
-        Multiply {a} * {b}
+        Multiple {a} * {b}
       </a>
       <a
-        className="btn btn-danger"
-        id="wd-path-parameter-divide"
-        href={`${REMOTE_SERVER}/lab5/divide/${a}/${b}`}
+        id="wd-query-parameter-divide"
+        className="btn btn-danger me-2"
+        href={`${REMOTE_SERVER}/lab5/calculator?operation=divide&a=${a}&b=${b}`}
       >
         Divide {a} / {b}
       </a>
