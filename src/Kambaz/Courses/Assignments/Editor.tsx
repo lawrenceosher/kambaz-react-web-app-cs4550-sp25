@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  Button,
   Form,
   FormCheck,
   FormControl,
@@ -7,20 +9,42 @@ import {
   FormSelect,
 } from "react-bootstrap";
 
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
-import * as db from "../../Database";
+import { useDispatch, useSelector } from "react-redux";
+import { addAssignment, updateAssignment } from "./reducer";
+import { useState } from "react";
 
 export default function AssignmentEditor() {
   const { aid } = useParams();
   const { cid } = useParams();
-  const assignments = db.assignments;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const selectedAssignment = assignments.find((a) => a._id === aid);
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
 
-  if (!selectedAssignment) {
-    return <div className="w-75">Invalid Assignment</div>;
-  }
+  const selectedAssignment = assignments.find((a: any) => a._id === aid);
+
+  const [assignment, setAssignment] = useState<any>(
+    selectedAssignment || {
+      title: "New Assignment",
+      description: "New Assignment Description",
+      points: 100,
+      availableFromDate: new Date(),
+      availableUntilDate: new Date(),
+      dueDate: new Date(),
+    }
+  );
+
+  const submitNewAssignment = () => {
+    dispatch(addAssignment({ ...assignment, course: cid }));
+    navigate(`/Kambaz/Courses/${cid}/Assignments`);
+  };
+
+  const updateExistingAssignment = () => {
+    dispatch(updateAssignment({ ...assignment }));
+    navigate(`/Kambaz/Courses/${cid}/Assignments`);
+  };
 
   function formatDateForFormInput(isoDateString: string) {
     const myDate = new Date(isoDateString);
@@ -37,7 +61,13 @@ export default function AssignmentEditor() {
       <Form>
         <FormGroup controlId="wd-name" className="mb-3">
           <FormLabel>Assignment Name</FormLabel>
-          <FormControl type="text" value={selectedAssignment.title} />
+          <FormControl
+            type="text"
+            defaultValue={assignment.title}
+            onChange={(e) =>
+              setAssignment({ ...assignment, title: e.target.value })
+            }
+          />
         </FormGroup>
 
         <FormControl
@@ -46,9 +76,11 @@ export default function AssignmentEditor() {
           rows={10}
           cols={50}
           className="mb-3"
-        >
-          {selectedAssignment.description}
-        </FormControl>
+          onChange={(e) =>
+            setAssignment({ ...assignment, description: e.target.value })
+          }
+          defaultValue={assignment.description}
+        />
 
         <FormGroup
           controlId="wd-points"
@@ -57,8 +89,11 @@ export default function AssignmentEditor() {
           <FormLabel className="w-25 m-2 text-end">Points</FormLabel>
           <FormControl
             type="number"
-            value={selectedAssignment.points}
+            defaultValue={assignment.points}
             className="w-75"
+            onChange={(e) =>
+              setAssignment({ ...assignment, points: e.target.value })
+            }
           />
         </FormGroup>
 
@@ -144,9 +179,17 @@ export default function AssignmentEditor() {
               <FormLabel className="fw-bold">Due</FormLabel>
               <FormControl
                 type="date"
-                defaultValue={formatDateForFormInput(
-                  selectedAssignment.dueDate
-                )}
+                defaultValue={formatDateForFormInput(assignment.dueDate)}
+                onChange={(e) =>
+                  // Had to add an additional day to the date because it was always one day behind the clicked value when submitting a new assignment or editing
+                  // Code taken from StackOverflow for adding 1 day: https://stackoverflow.com/questions/13762930/how-to-add-24-hours-to-datetime-object-of-javascript
+                  setAssignment({
+                    ...assignment,
+                    dueDate: new Date(
+                      new Date(e.target.value).getTime() + 60 * 60 * 24 * 1000
+                    ).toISOString(),
+                  })
+                }
               />
             </FormGroup>
 
@@ -159,8 +202,16 @@ export default function AssignmentEditor() {
                 <FormControl
                   type="date"
                   defaultValue={formatDateForFormInput(
-                    selectedAssignment.availableDate
+                    assignment.availableFromDate
                   )}
+                  onChange={(e) =>
+                    setAssignment({
+                      ...assignment,
+                      availableFromDate: new Date(
+                        new Date(e.target.value).getTime() + 60 * 60 * 24 * 1000
+                      ).toISOString(),
+                    })
+                  }
                 />
               </FormGroup>
 
@@ -169,8 +220,16 @@ export default function AssignmentEditor() {
                 <FormControl
                   type="date"
                   defaultValue={formatDateForFormInput(
-                    selectedAssignment.dueDate
+                    assignment.availableUntilDate
                   )}
+                  onChange={(e) =>
+                    setAssignment({
+                      ...assignment,
+                      availableUntilDate: new Date(
+                        new Date(e.target.value).getTime() + 60 * 60 * 24 * 1000
+                      ).toISOString(),
+                    })
+                  }
                 />
               </FormGroup>
             </div>
@@ -186,12 +245,16 @@ export default function AssignmentEditor() {
         >
           Cancel
         </Link>
-        <Link
-          to={`/Kambaz/Courses/${cid}/Assignments`}
-          className="btn btn-danger"
+        <Button
+          variant="danger"
+          onClick={
+            aid === "newAssignment"
+              ? submitNewAssignment
+              : updateExistingAssignment
+          }
         >
           Save
-        </Link>
+        </Button>
       </div>
     </div>
   );

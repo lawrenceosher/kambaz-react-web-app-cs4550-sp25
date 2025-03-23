@@ -1,7 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, FormControl, InputGroup } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 
 export default function AssignmentsControls() {
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+
+  const { cid } = useParams();
+
   return (
     <div
       id="wd-assignments-controls"
@@ -19,25 +27,26 @@ export default function AssignmentsControls() {
         </InputGroup>
       </div>
 
-      <div className="d-flex justify-content-end flex-fill">
-        <Button
-          variant="secondary"
-          size="lg"
-          className="me-1"
-          id="wd-add-assignment-group"
-        >
-          + Group
-        </Button>
+      {currentUser.role === "FACULTY" && (
+        <div className="d-flex justify-content-end flex-fill">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="me-1"
+            id="wd-add-assignment-group"
+          >
+            + Group
+          </Button>
 
-        <Button
-          variant="danger"
-          size="lg"
-          className="me-1"
-          id="wd-add-assignment"
-        >
-          + Assignment
-        </Button>
-      </div>
+          <Link
+            to={`/Kambaz/Courses/${cid}/Assignments/newAssignment`}
+            className="btn btn-danger btn-lg me-1"
+            id="wd-add-assignment"
+          >
+            + Assignment
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
