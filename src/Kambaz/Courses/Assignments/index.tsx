@@ -12,8 +12,9 @@ import { IoEllipsisVertical } from "react-icons/io5";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import DeleteAssignmentDialog from "./DeleteAssignmentDialog";
-import { useState } from "react";
-import { deleteAssignment } from "./reducer";
+import { useEffect, useState } from "react";
+import { deleteAssignment, setAssignments } from "./reducer";
+import * as assignmentsClient from "./client";
 
 export default function Assignments() {
   const { cid } = useParams();
@@ -39,6 +40,16 @@ export default function Assignments() {
 
     return formattedDate.format(myDate);
   }
+
+  const fetchAssignments = async () => {
+    const assignments = await assignmentsClient.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+
 
   return (
     <div id="wd-assignments">
@@ -70,7 +81,6 @@ export default function Assignments() {
 
       <ListGroup id="wd-assignment-list" className="rounded-0">
         {assignments
-          .filter((assignment: any) => assignment.course === cid)
           .map((assignment: any) => (
             <ListGroupItem
               key={assignment._id}
