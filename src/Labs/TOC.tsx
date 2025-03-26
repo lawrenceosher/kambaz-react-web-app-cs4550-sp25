@@ -65,7 +65,27 @@ export default function TOC() {
           target="_blank"
           className="nav-link"
         >
-          Lawrence's GitHub
+          Lawrence's Web App GitHub
+        </a>
+      </li>
+      <li className="nav-item">
+        <a
+          id="wd-github"
+          href="https://github.com/lawrenceosher/kambaz-node-server-app-cs4550-sp25"
+          target="_blank"
+          className="nav-link"
+        >
+          Lawrence's Node Server GitHub
+        </a>
+      </li>
+      <li className="nav-item">
+        <a
+          id="wd-github"
+          href="https://kambaz-node-server-app-cs4550-sp25-lo.onrender.com"
+          target="_blank"
+          className="nav-link"
+        >
+          Server
         </a>
       </li>
     </ul>
