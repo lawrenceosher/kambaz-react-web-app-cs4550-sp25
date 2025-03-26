@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BsGripVertical } from "react-icons/bs";
 import { GoTriangleDown } from "react-icons/go";
@@ -12,8 +13,9 @@ import { IoEllipsisVertical } from "react-icons/io5";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import DeleteAssignmentDialog from "./DeleteAssignmentDialog";
-import { useState } from "react";
-import { deleteAssignment } from "./reducer";
+import { useEffect, useState } from "react";
+import { deleteAssignment, setAssignments } from "./reducer";
+import * as assignmentsClient from "./client";
 
 export default function Assignments() {
   const { cid } = useParams();
@@ -40,6 +42,22 @@ export default function Assignments() {
     return formattedDate.format(myDate);
   }
 
+  const fetchAssignments = async () => {
+    const assignments = await assignmentsClient.findAssignmentsForCourse(
+      cid as string
+    );
+    dispatch(setAssignments(assignments));
+  };
+
+  const removeAssignment = async () => {
+    await assignmentsClient.deleteAssignment(assignmentForModal._id);
+    dispatch(deleteAssignment(assignmentForModal._id));
+  };
+
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+
   return (
     <div id="wd-assignments">
       <AssignmentsControls />
@@ -49,9 +67,7 @@ export default function Assignments() {
         handleClose={handleClose}
         assignmentTitle={assignmentForModal.title}
         assignmentId={assignmentForModal._id}
-        deleteAssignment={() => {
-          dispatch(deleteAssignment(assignmentForModal._id));
-        }}
+        deleteAssignment={removeAssignment}
       />
 
       <h3
@@ -69,69 +85,67 @@ export default function Assignments() {
       </h3>
 
       <ListGroup id="wd-assignment-list" className="rounded-0">
-        {assignments
-          .filter((assignment: any) => assignment.course === cid)
-          .map((assignment: any) => (
-            <ListGroupItem
-              key={assignment._id}
-              className="wd-assignment-list-item p-3 ps-1 mt-0 d-flex align-items-center"
-            >
+        {assignments.map((assignment: any) => (
+          <ListGroupItem
+            key={assignment._id}
+            className="wd-assignment-list-item p-3 ps-1 mt-0 d-flex align-items-center"
+          >
+            {currentUser.role === "FACULTY" && (
+              <>
+                <BsGripVertical className="me-3 fs-3" />
+                <a
+                  href={`#/Kambaz/Courses/${cid}/Assignments/${assignment._id}`}
+                >
+                  <FaEdit className="fs-3 me-3 text-success" />
+                </a>
+              </>
+            )}
+
+            <div className="d-flex flex-column">
+              {currentUser.role === "FACULTY" ? (
+                <a
+                  href={`#/Kambaz/Courses/${cid}/Assignments/${assignment._id}`}
+                  className="wd-assignment-link fw-bold text-decoration-none text-black"
+                >
+                  {assignment.title}
+                </a>
+              ) : (
+                <span className="fw-bold text-black">{assignment.title}</span>
+              )}{" "}
+              <div>
+                <span className="text-danger"> Multiple Modules </span>{" "}
+                <span className="mx-2"> | </span>
+                <span className="fw-bold">Not available until</span>{" "}
+                {toDate(assignment.availableFromDate)}
+                <span className="mx-2"> | </span>
+              </div>
+              <div>
+                <span className="fw-bold">Due</span>{" "}
+                {toDate(assignment.dueDate)} <span className="mx-2"> | </span>{" "}
+                {assignment.points} pts
+              </div>
+            </div>
+
+            <div className="d-inline-flex flex-grow-1 justify-content-end fs-4">
               {currentUser.role === "FACULTY" && (
                 <>
-                  <BsGripVertical className="me-3 fs-3" />
-                  <a
-                    href={`#/Kambaz/Courses/${cid}/Assignments/${assignment._id}`}
-                  >
-                    <FaEdit className="fs-3 me-3 text-success" />
-                  </a>
+                  <FaTrash
+                    className="text-danger me-4"
+                    onClick={() => {
+                      setAssignmentForModal({
+                        _id: assignment._id,
+                        title: assignment.title,
+                      });
+                      handleShow();
+                    }}
+                  />
                 </>
               )}
-
-              <div className="d-flex flex-column">
-                {currentUser.role === "FACULTY" ? (
-                  <a
-                    href={`#/Kambaz/Courses/${cid}/Assignments/${assignment._id}`}
-                    className="wd-assignment-link fw-bold text-decoration-none text-black"
-                  >
-                    {assignment.title}
-                  </a>
-                ) : (
-                  <span className="fw-bold text-black">{assignment.title}</span>
-                )}{" "}
-                <div>
-                  <span className="text-danger"> Multiple Modules </span>{" "}
-                  <span className="mx-2"> | </span>
-                  <span className="fw-bold">Not available until</span>{" "}
-                  {toDate(assignment.availableFromDate)}
-                  <span className="mx-2"> | </span>
-                </div>
-                <div>
-                  <span className="fw-bold">Due</span>{" "}
-                  {toDate(assignment.dueDate)} <span className="mx-2"> | </span>{" "}
-                  {assignment.points} pts
-                </div>
-              </div>
-
-              <div className="d-inline-flex flex-grow-1 justify-content-end fs-4">
-                {currentUser.role === "FACULTY" && (
-                  <>
-                    <FaTrash
-                      className="text-danger me-4"
-                      onClick={() => {
-                        setAssignmentForModal({
-                          _id: assignment._id,
-                          title: assignment.title,
-                        });
-                        handleShow();
-                      }}
-                    />
-                  </>
-                )}
-                <GreenCheckmark />
-                <IoEllipsisVertical className="ms-3 fs-3" />
-              </div>
-            </ListGroupItem>
-          ))}
+              <GreenCheckmark />
+              <IoEllipsisVertical className="ms-3 fs-3" />
+            </div>
+          </ListGroupItem>
+        ))}
       </ListGroup>
     </div>
   );

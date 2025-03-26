@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addAssignment, updateAssignment } from "./reducer";
 import { useState } from "react";
+import * as assignmentsClient from "./client";
 
 export default function AssignmentEditor() {
   const { aid } = useParams();
@@ -36,12 +37,18 @@ export default function AssignmentEditor() {
     }
   );
 
-  const submitNewAssignment = () => {
-    dispatch(addAssignment({ ...assignment, course: cid }));
+  const submitNewAssignment = async () => {
+    if (!cid) return;
+    const newAssignment = await assignmentsClient.createAssignmentForCourse(
+      cid,
+      { ...assignment, course: cid }
+    );
+    dispatch(addAssignment(newAssignment));
     navigate(`/Kambaz/Courses/${cid}/Assignments`);
   };
 
-  const updateExistingAssignment = () => {
+  const updateExistingAssignment = async () => {
+    await assignmentsClient.updateAssignment({ ...assignment });
     dispatch(updateAssignment({ ...assignment }));
     navigate(`/Kambaz/Courses/${cid}/Assignments`);
   };
