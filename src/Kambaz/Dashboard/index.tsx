@@ -51,6 +51,8 @@ export default function Dashboard({
         course: courseId,
       })
     );
+    const updatedCourses = await userClient.findMyCourses();
+    setMappableCourses(updatedCourses);
   };
 
   useEffect(() => {
