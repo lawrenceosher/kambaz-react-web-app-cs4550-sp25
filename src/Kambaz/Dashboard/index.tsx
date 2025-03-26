@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 import * as enrollmentsClient from "./Enrollments/client";
 import * as coursesClient from "../Courses/client";
+import * as userClient from "../Account/client";
 
 export default function Dashboard({
   courses,
@@ -29,8 +30,10 @@ export default function Dashboard({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [showAllCourses, setShowAllCourses] = useState(false);
   const [showFilteredCourses, setShowFilteredCourses] = useState(true);
+  const toggleFilteredCourses = () => {
+    setShowFilteredCourses(!showFilteredCourses);
+  };
   const [mappableCourses, setMappableCourses] = useState(courses);
 
   const enrollIntoCourse = async (courseId: string) => {
@@ -56,12 +59,13 @@ export default function Dashboard({
       if (!showFilteredCourses) {
         setMappableCourses(allCourses);
       } else {
-        setMappableCourses(courses);
+        const updatedCourses = await userClient.findMyCourses();
+        setMappableCourses(updatedCourses);
       }
     };
 
     getAllCourses();
-  }, [currentUser._id, showFilteredCourses]);
+  }, [currentUser._id, showFilteredCourses, courses]);
 
   useEffect(() => {
     const getAllEnrollmentsForUser = async () => {
@@ -71,7 +75,7 @@ export default function Dashboard({
     };
 
     getAllEnrollmentsForUser();
-  }, []);
+  }, [dispatch]);
 
   return (
     <div id="wd-dashboard">
@@ -81,15 +85,7 @@ export default function Dashboard({
           <button
             className="btn btn-primary btn-lg float-end"
             id="wd-show-enrollments"
-            onClick={() => {
-              if (!showAllCourses) {
-                setShowAllCourses(!showAllCourses);
-                setShowFilteredCourses(false);
-              } else {
-                setShowAllCourses(false);
-                setShowFilteredCourses(true);
-              }
-            }}
+            onClick={toggleFilteredCourses}
           >
             Enrollments
           </button>
