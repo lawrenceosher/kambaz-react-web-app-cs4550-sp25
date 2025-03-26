@@ -2,9 +2,12 @@
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 
-import { addEnrollment, deleteEnrollment } from "./reducer";
+import { addEnrollment, deleteEnrollment, setEnrollments } from "./reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+
+import * as enrollmentsClient from "./Enrollments/client";
+import * as coursesClient from "../Courses/client";
 
 export default function Dashboard({
   courses,
@@ -30,19 +33,45 @@ export default function Dashboard({
   const [showFilteredCourses, setShowFilteredCourses] = useState(true);
   const [mappableCourses, setMappableCourses] = useState(courses);
 
-  useEffect(() => {
-    const newCoursesToShow = showFilteredCourses
-      ? courses.filter((course) =>
-          enrollments.some(
-            (enrollment: any) =>
-              enrollment.user === currentUser._id &&
-              enrollment.course === course._id
-          )
-        )
-      : courses;
+  const enrollIntoCourse = async (courseId: string) => {
+    const enrollment = await enrollmentsClient.addEnrollmentIntoCourse(
+      courseId
+    );
+    dispatch(addEnrollment(enrollment));
+  };
 
-    setMappableCourses(newCoursesToShow);
-  }, [courses, currentUser._id, enrollments, showFilteredCourses]);
+  const unenrollFromCourse = async (courseId: string) => {
+    await enrollmentsClient.removeEnrollmentFromCourse(courseId);
+    dispatch(
+      deleteEnrollment({
+        user: currentUser._id,
+        course: courseId,
+      })
+    );
+  };
+
+  useEffect(() => {
+    const getAllCourses = async () => {
+      const allCourses = await coursesClient.fetchAllCourses();
+      if (!showFilteredCourses) {
+        setMappableCourses(allCourses);
+      } else {
+        setMappableCourses(courses);
+      }
+    };
+
+    getAllCourses();
+  }, [currentUser._id, showFilteredCourses]);
+
+  useEffect(() => {
+    const getAllEnrollmentsForUser = async () => {
+      const enrollments =
+        await enrollmentsClient.retrieveAllEnrollmentsForUser();
+      dispatch(setEnrollments(enrollments));
+    };
+
+    getAllEnrollmentsForUser();
+  }, []);
 
   return (
     <div id="wd-dashboard">
@@ -103,17 +132,7 @@ export default function Dashboard({
         </div>
       )}
       <h2 id="wd-dashboard-published">
-        Published Courses (
-        {showFilteredCourses
-          ? courses.filter((course) =>
-              enrollments.some(
-                (enrollment: any) =>
-                  enrollment.user === currentUser._id &&
-                  enrollment.course === course._id
-              )
-            ).length
-          : courses.length}
-        )
+        Published Courses ({mappableCourses.length})
       </h2>
       <hr />
       <div id="wd-dashboard-courses">
@@ -197,12 +216,7 @@ export default function Dashboard({
                           variant="danger"
                           onClick={(event) => {
                             event.preventDefault();
-                            dispatch(
-                              deleteEnrollment({
-                                user: currentUser._id,
-                                course: course._id,
-                              })
-                            );
+                            unenrollFromCourse(course._id);
                           }}
                           className="float-end"
                           id="wd-unenroll-course-click"
@@ -222,12 +236,7 @@ export default function Dashboard({
                           id="wd-enroll-course-click"
                           onClick={(event) => {
                             event.preventDefault();
-                            dispatch(
-                              addEnrollment({
-                                user: currentUser._id,
-                                course: course._id,
-                              })
-                            );
+                            enrollIntoCourse(course._id);
                           }}
                           className="me-2 float-end"
                         >
