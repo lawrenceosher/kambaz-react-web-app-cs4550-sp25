@@ -8,7 +8,6 @@ import "./styles.css";
 import { useEffect, useState } from "react";
 import ProtectedRoute from "./Account/ProtectedRoute";
 import Session from "./Account/Session";
-import * as userClient from "./Account/client";
 import * as courseClient from "./Courses/client";
 import { useSelector } from "react-redux";
 
@@ -25,7 +24,7 @@ export default function Kambaz() {
     description: "New Description",
   });
   const addNewCourse = async () => {
-    const newCourse = await userClient.createCourse(course);
+    const newCourse = await courseClient.createCourse(course);
     setCourses([...courses, newCourse]);
   };
   const deleteCourse = async (courseId: any) => {
@@ -47,7 +46,7 @@ export default function Kambaz() {
 
   const fetchCourses = async () => {
     try {
-      const courses = await userClient.findMyCourses();
+      const courses = await courseClient.fetchAllCourses();
       setCourses(courses);
     } catch (error) {
       console.error(error);
