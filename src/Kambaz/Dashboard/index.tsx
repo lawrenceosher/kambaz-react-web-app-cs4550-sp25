@@ -31,14 +31,13 @@ export default function Dashboard({
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">
         Dashboard{" "}
-        {currentUser.role === "STUDENT" && (
+        
           <button
             onClick={() => setEnrolling(!enrolling)}
             className="float-end btn btn-primary"
           >
             {enrolling ? "My Courses" : "All Courses"}
           </button>
-        )}{" "}
       </h1>{" "}
       <hr />
       {currentUser.role === "FACULTY" && (
